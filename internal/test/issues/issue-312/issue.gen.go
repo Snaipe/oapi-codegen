@@ -22,6 +22,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // Error defines model for Error.
 type Error struct {
 	// Error code
@@ -466,6 +470,7 @@ func (w *ServerInterfaceWrapper) GetPet(ctx echo.Context) error {
 // SetContextValidatePets sets route-specific data (like authentication scopes) in the echo Context.
 func (w *ServerInterfaceWrapper) SetContextValidatePets(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }

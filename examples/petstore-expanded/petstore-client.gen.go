@@ -17,6 +17,10 @@ import (
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // Error defines model for Error.
 type Error struct {
 	// Error code

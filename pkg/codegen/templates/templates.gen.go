@@ -167,7 +167,10 @@ func (siw *ServerInterfaceWrapper) {{$opid}}(w http.ResponseWriter, r *http.Requ
 
 {{range .SecurityDefinitions}}
   ctx = context.WithValue(ctx, {{.ProviderName | ucFirst}}Scopes, {{toStringArray .Scopes}})
-{{end}}
+{{- end}}
+{{- with (getRequestMediaTypes .) }}
+  ctx = context.WithValue(ctx, RequestMediaTypes, {{toStringArray .}})
+{{- end }}
 
   {{if .RequiresParamObject}}
     // Parameter object where we will unmarshal all parameters from the context
@@ -715,16 +718,10 @@ const (
 {{end}}
 )
 {{end}}
-{{if gt (len .EnumDefinitions) 0 }}
-{{range $Enum := .EnumDefinitions}}
-// Defines values for {{$Enum.TypeName}}.
+
 const (
-{{range $index, $value := $Enum.Schema.EnumValues}}
-  {{$index}} {{$Enum.TypeName}} = {{$Enum.ValueWrapper}}{{$value}}{{$Enum.ValueWrapper}}
-{{end}}
+    RequestMediaTypes = "RequestMediaTypes"
 )
-{{end}}
-{{end}}
 `,
 	"echo-interface.tmpl": `// ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -797,6 +794,9 @@ func (w *ServerInterfaceWrapper) SetContext{{.OperationId}} (next echo.HandlerFu
 {{- range .SecurityDefinitions}}
         ctx.Set({{.ProviderName | sanitizeGoIdentity | ucFirst}}Scopes, {{toStringArray .Scopes}})
 {{- end}}
+{{- with (getRequestMediaTypes .) }}
+        ctx.Set(RequestMediaTypes, {{toStringArray .}})
+{{- end }}
         return next(ctx)
     }
 }
@@ -926,6 +926,17 @@ func (w *ServerInterfaceWrapper) {{.OperationId}} (ctx echo.Context) error {
     err = w.Handler.{{.OperationId}}(ctx{{genParamNames .PathParams}}{{if .RequiresParamObject}}, params{{end}})
     return err
 }
+{{end}}
+`,
+	"enums.tmpl": `{{if gt (len .EnumDefinitions) 0 }}
+{{range $Enum := .EnumDefinitions}}
+// Defines values for {{$Enum.TypeName}}.
+const (
+{{range $index, $value := $Enum.Schema.EnumValues}}
+  {{$index}} {{$Enum.TypeName}} = {{$Enum.ValueWrapper}}{{$value}}{{$Enum.ValueWrapper}}
+{{end}}
+)
+{{end}}
 {{end}}
 `,
 	"imports.tmpl": `// Package {{.PackageName}} provides primitives to interact with the openapi HTTP API.

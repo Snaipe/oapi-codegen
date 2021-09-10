@@ -21,6 +21,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // ComplexObject defines model for ComplexObject.
 type ComplexObject struct {
 	Id      int    `json:"Id"`

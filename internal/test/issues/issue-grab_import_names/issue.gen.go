@@ -21,6 +21,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // GetFooParams defines parameters for GetFoo.
 type GetFooParams struct {
 	// base64. bytes. chi. context. echo. errors. fmt. gzip. http. io. ioutil. json. openapi3.

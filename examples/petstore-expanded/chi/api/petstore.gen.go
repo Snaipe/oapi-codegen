@@ -6,6 +6,7 @@ package api
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
 	"fmt"
 	"net/http"
@@ -16,6 +17,10 @@ import (
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-chi/chi/v5"
+)
+
+const (
+	RequestMediaTypes = "RequestMediaTypes"
 )
 
 // Error defines model for Error.
@@ -129,6 +134,8 @@ func (siw *ServerInterfaceWrapper) FindPets(w http.ResponseWriter, r *http.Reque
 // AddPet operation middleware
 func (siw *ServerInterfaceWrapper) AddPet(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, RequestMediaTypes, []string{"application/json"})
 
 	var handler = func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.AddPet(w, r)

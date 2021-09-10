@@ -17,6 +17,10 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // Container defines model for Container.
 type Container struct {
 	ObjectA *externalRef0.ObjectA `json:"object_a,omitempty"`

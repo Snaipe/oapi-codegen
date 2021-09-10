@@ -10,6 +10,9 @@ func (w *ServerInterfaceWrapper) SetContext{{.OperationId}} (next echo.HandlerFu
 {{- range .SecurityDefinitions}}
         ctx.Set({{.ProviderName | sanitizeGoIdentity | ucFirst}}Scopes, {{toStringArray .Scopes}})
 {{- end}}
+{{- with (getRequestMediaTypes .) }}
+        ctx.Set(RequestMediaTypes, {{toStringArray .}})
+{{- end }}
         return next(ctx)
     }
 }

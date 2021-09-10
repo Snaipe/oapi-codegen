@@ -17,6 +17,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"text/template"
 
@@ -267,6 +268,21 @@ func stripNewLines(s string) string {
 	return r.Replace(s)
 }
 
+func getRequestMediaTypes(op *OperationDefinition) []string {
+	uniq := make(map[string]struct{}, len(op.Bodies))
+	for i := range op.Bodies {
+		uniq[op.Bodies[i].ContentType] = struct{}{}
+	}
+
+	out := make([]string, 0, len(uniq))
+	for s, _ := range uniq {
+		out = append(out, s)
+	}
+	sort.Strings(out)
+
+	return out
+}
+
 // This function map is passed to the template engine, and we can call each
 // function here by keyName from the template code.
 var TemplateFunctions = template.FuncMap{
@@ -283,6 +299,7 @@ var TemplateFunctions = template.FuncMap{
 	"genResponseTypeName":        genResponseTypeName,
 	"genResponseUnmarshal":       genResponseUnmarshal,
 	"getResponseTypeDefinitions": getResponseTypeDefinitions,
+	"getRequestMediaTypes":       getRequestMediaTypes,
 	"toStringArray":              toStringArray,
 	"lower":                      strings.ToLower,
 	"title":                      strings.Title,

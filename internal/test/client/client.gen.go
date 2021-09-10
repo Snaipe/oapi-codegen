@@ -25,6 +25,10 @@ const (
 	OpenIdScopes = "OpenId.Scopes"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // SchemaObject defines model for SchemaObject.
 type SchemaObject struct {
 	FirstName string `json:"firstName"`
@@ -907,6 +911,7 @@ type ServerInterfaceWrapper struct {
 // SetContextPostBoth sets route-specific data (like authentication scopes) in the echo Context.
 func (w *ServerInterfaceWrapper) SetContextPostBoth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }
@@ -943,6 +948,7 @@ func (w *ServerInterfaceWrapper) GetBoth(ctx echo.Context) error {
 // SetContextPostJson sets route-specific data (like authentication scopes) in the echo Context.
 func (w *ServerInterfaceWrapper) SetContextPostJson(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }

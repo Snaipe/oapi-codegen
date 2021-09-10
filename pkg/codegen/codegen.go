@@ -514,7 +514,7 @@ func GenerateEnums(t *template.Template, types []TypeDefinition) (string, error)
 		}
 	}
 
-  return GenerateTemplates([]string{"constants.tmpl"}, t, c)
+  return GenerateTemplates([]string{"enums.tmpl"}, t, c)
 
 }
 

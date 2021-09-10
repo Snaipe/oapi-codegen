@@ -16,6 +16,10 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // ObjectA defines model for ObjectA.
 type ObjectA struct {
 	Name    *string               `json:"name,omitempty"`

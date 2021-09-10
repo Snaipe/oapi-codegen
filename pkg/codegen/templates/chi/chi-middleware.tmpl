@@ -40,7 +40,10 @@ func (siw *ServerInterfaceWrapper) {{$opid}}(w http.ResponseWriter, r *http.Requ
 
 {{range .SecurityDefinitions}}
   ctx = context.WithValue(ctx, {{.ProviderName | ucFirst}}Scopes, {{toStringArray .Scopes}})
-{{end}}
+{{- end}}
+{{- with (getRequestMediaTypes .) }}
+  ctx = context.WithValue(ctx, RequestMediaTypes, {{toStringArray .}})
+{{- end }}
 
   {{if .RequiresParamObject}}
     // Parameter object where we will unmarshal all parameters from the context

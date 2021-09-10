@@ -76,6 +76,7 @@ func (w *ServerInterfaceWrapper) FindPets(ctx echo.Context) error {
 // SetContextAddPet sets route-specific data (like authentication scopes) in the echo Context.
 func (w *ServerInterfaceWrapper) SetContextAddPet(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }

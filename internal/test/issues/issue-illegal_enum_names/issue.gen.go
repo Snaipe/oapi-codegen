@@ -20,6 +20,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // Defines values for Bar.
 const (
 	BarBar Bar = "Bar"

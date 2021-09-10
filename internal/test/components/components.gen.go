@@ -22,6 +22,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // Has additional properties of type int
 type AdditionalPropertiesObject1 struct {
 	Id                   int            `json:"id"`
@@ -1291,6 +1295,7 @@ type ServerInterfaceWrapper struct {
 // SetContextEnsureEverythingIsReferenced sets route-specific data (like authentication scopes) in the echo Context.
 func (w *ServerInterfaceWrapper) SetContextEnsureEverythingIsReferenced(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }
@@ -1343,6 +1348,7 @@ func (w *ServerInterfaceWrapper) ParamsWithAddProps(ctx echo.Context) error {
 // SetContextBodyWithAddProps sets route-specific data (like authentication scopes) in the echo Context.
 func (w *ServerInterfaceWrapper) SetContextBodyWithAddProps(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }

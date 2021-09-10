@@ -4,6 +4,7 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -11,6 +12,10 @@ import (
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
 	openapi_types "github.com/deepmap/oapi-codegen/pkg/types"
 	"github.com/go-chi/chi/v5"
+)
+
+const (
+	RequestMediaTypes = "RequestMediaTypes"
 )
 
 // EveryTypeOptional defines model for EveryTypeOptional.
@@ -357,6 +362,8 @@ func (siw *ServerInterfaceWrapper) CreateResource(w http.ResponseWriter, r *http
 		return
 	}
 
+	ctx = context.WithValue(ctx, RequestMediaTypes, []string{"application/json"})
+
 	var handler = func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateResource(w, r, argument)
 	}
@@ -382,6 +389,8 @@ func (siw *ServerInterfaceWrapper) CreateResource2(w http.ResponseWriter, r *htt
 		http.Error(w, fmt.Sprintf("Invalid format for parameter inline_argument: %s", err), http.StatusBadRequest)
 		return
 	}
+
+	ctx = context.WithValue(ctx, RequestMediaTypes, []string{"application/json"})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params CreateResource2Params
@@ -422,6 +431,8 @@ func (siw *ServerInterfaceWrapper) UpdateResource3(w http.ResponseWriter, r *htt
 		http.Error(w, fmt.Sprintf("Invalid format for parameter fallthrough: %s", err), http.StatusBadRequest)
 		return
 	}
+
+	ctx = context.WithValue(ctx, RequestMediaTypes, []string{"application/json"})
 
 	var handler = func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.UpdateResource3(w, r, pFallthrough)

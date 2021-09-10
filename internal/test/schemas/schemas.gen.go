@@ -29,6 +29,10 @@ const (
 	Access_tokenScopes = "access_token.Scopes"
 )
 
+const (
+	RequestMediaTypes = "RequestMediaTypes"
+)
+
 // This schema name starts with a number
 type N5StartsWithNumber map[string]interface{}
 
@@ -1080,6 +1084,7 @@ func (w *ServerInterfaceWrapper) Issue127(ctx echo.Context) error {
 func (w *ServerInterfaceWrapper) SetContextIssue185(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		ctx.Set(Access_tokenScopes, []string{""})
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }
@@ -1177,6 +1182,7 @@ func (w *ServerInterfaceWrapper) Issue41(ctx echo.Context) error {
 func (w *ServerInterfaceWrapper) SetContextIssue9(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		ctx.Set(Access_tokenScopes, []string{""})
+		ctx.Set(RequestMediaTypes, []string{"application/json"})
 		return next(ctx)
 	}
 }
